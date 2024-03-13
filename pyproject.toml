@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "cmd-builder"
+version = "0.1.0"
+description = ""
+authors = ["puzzzzzzle <2359173906@qq.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3"
+
+
+[tool.poetry.group.test]
+
+[tool.poetry.group.test.dependencies]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
