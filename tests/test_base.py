@@ -46,7 +46,7 @@ class TestBase(unittest.TestCase):
     def get_cmd_run_out_put(self, cmds, args: str):
         self.hook_new_out_put()
         arg_list = [x for x in args.split(" ") if x != ""]
-        cmd_builder.cmd_main(cmds, arg_list, TestableArgumentParser)
+        cmd_builder.cmd_main(cmds, arg_list, TestableArgumentParser, help_str="test cmd builder")
         stdout = self.out_put
         self.restore_out_put()
         return stdout

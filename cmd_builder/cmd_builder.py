@@ -16,7 +16,7 @@ class CmdObject(object):
     def __init__(self, cmd_code, cmd_name: str, description: str, help_str: str, target_obj=None):
         cmd_name = cmd_name or cmd_code.__name__
         description = description or get_func_doc(cmd_code)
-        description = help_str or description
+        help_str = help_str or description
 
         self.cmd_name = cmd_name
         self.cmd_code = cmd_code
@@ -54,7 +54,15 @@ def get_func_doc(cmd_code):
     :param cmd_code:
     :return:
     """
-    return cmd_code.__doc__ or ''
+    desc = cmd_code.__doc__ or ''
+    result = []
+    for line in desc.split('\n'):
+        if line.strip() == "":
+            continue
+        if line.strip().startswith(':param') or line.strip().startswith(':return'):
+            break
+        result.append(line)
+    return "\n".join(result)
 
 
 def get_param_description(function, para_name):
@@ -203,16 +211,12 @@ def run_one_cmd(obj: CmdObject, para):
     pass
 
 
-def cmd_main(cmds: list[CmdObject] = None, args=None, parser=argparse.ArgumentParser):
+def cmd_main(cmds: list[CmdObject] = None, args=None, parser=argparse.ArgumentParser, help_str=""):
     """
     main args builder
     :return:
     """
-    root = parser(
-        description=
-        f"""
-multi git repositories mng
-""")
+    root = parser(description=help_str)
     root.set_defaults(func=lambda *args: root.print_help())
 
     sub_cmds = root.add_subparsers(help=f"supported cmds:")
@@ -221,7 +225,6 @@ multi git repositories mng
     args = root.parse_args(args)
     # execute
     args.func(args)
-
 
 # def empty_function():
 #     print('empty function')
